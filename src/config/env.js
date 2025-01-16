@@ -1,3 +1,4 @@
+
 // Question: Pourquoi est-il important de valider les variables d'environnement au démarrage ?
 // Réponse : 
 // La validation des variables d'environnement est importante car elle permet de s'assurer que 
@@ -12,6 +13,7 @@
 // Cela peut entraîner des erreurs dans la logique métier, des connexions échouées à la base de données,
 // ou une défaillance dans la configuration d'un service, ce qui pourrait compromettre le bon fonctionnement de l'application.
 
+// Importation du package dotenv pour charger les variables d'environnement
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -20,10 +22,7 @@ const requiredEnvVars = [
   'MONGODB_DB_NAME',
   'REDIS_URI'
 ];
-
 // Validation des variables d'environnement
- // TODO: Implémenter la validation
-  // Si une variable manque, lever une erreur explicative
 function validateEnv() {
   requiredEnvVars.forEach((envVar) => {
     if (!process.env[envVar]) {
@@ -31,6 +30,7 @@ function validateEnv() {
     }
   });
 }
+
 // Appel de la fonction de validation des variables d'environnement
 validateEnv();
 
