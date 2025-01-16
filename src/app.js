@@ -28,7 +28,9 @@ async function startServer() {
     // Connexion à MongoDB et Redis
     console.log('Tentative de connexion aux bases de données...');
     await db.connectMongo();  // Connexion MongoDB
+    console.log('Connexion à MongoDB réussie.');
     await db.connectRedis();  // Connexion Redis
+    console.log('Connexion à Redis réussie.');
 
     console.log('Bases de données connectées avec succès.');
 
@@ -47,6 +49,8 @@ async function startServer() {
 
   } catch (error) {
     console.error('Échec du démarrage du serveur:', error);
+    await db.disconnectMongo(); // Fermer la connexion MongoDB proprement en cas d'erreur
+    await db.disconnectRedis(); // Fermer la connexion Redis proprement en cas d'erreur
     process.exit(1);  // Quitter le processus avec un code d'erreur en cas d'échec
   }
 }
