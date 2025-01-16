@@ -3,29 +3,24 @@
 // Réponse: 
 // Les services séparés permettent d'organiser et de réutiliser la logique métier dans différentes parties de l'application,
 // de réduire la duplication de code et de rendre le code plus modulaire, testable et maintenable.
+const { MongoClient } = require('mongodb');
+const uri = 'mongodb://localhost:27017'; // Votre URI MongoDB
+const dbName = 'learningPlatform'; // Nom de la base de données
 
-const { ObjectId } = require('mongodb');
-
-// Fonctions utilitaires pour MongoDB
-  // TODO: Implémenter une fonction générique de recherche par ID
-async function findOneById(collection, id) {
-  try {
-    // Vérifie si l'id est valide
-    if (!ObjectId.isValid(id)) {
-      throw new Error('ID invalide');
-    }
-
-    // Recherche le document dans la collection spécifiée
-    const result = await collection.findOne({ _id: new ObjectId(id) });
-    return result;
-  } catch (err) {
-    console.error('Erreur lors de la recherche par ID:', err);
-    throw err;
-  }
+// Connexion à MongoDB
+async function getDbConnection() {
+  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  await client.connect();
+  return client.db(dbName);
 }
 
-// Export des services
- // TODO: Exporter les fonctions utilitaires
+// Insérer un document dans une collection
+async function insertOne(collection, data) {
+  const db = await getDbConnection();
+  const result = await db.collection(collection).insertOne(data);
+  return result;
+}
+
 module.exports = {
-  findOneById,  // Export de la fonction utilitaire
+  insertOne,
 };
