@@ -19,7 +19,8 @@
 */
 const { MongoClient } = require('mongodb');
 const redis = require('redis');
-const config = require('./env'); 
+const config = require('./env');
+
 // Variables pour les clients MongoDB et Redis
 let mongoClient, redisClient, db;
 
@@ -27,30 +28,29 @@ let mongoClient, redisClient, db;
 async function connectMongo() {
   try {
     console.log('Tentative de connexion à MongoDB...');
-    // Utilisation de l'URI MongoDB et du nom de la base de données définis dans le fichier config
-    mongoClient = new MongoClient(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+    mongoClient = new MongoClient(config.mongodb.uri, { useNewUrlParser: true, useUnifiedTopology: true });
     await mongoClient.connect();
-    db = mongoClient.db(config.dbName);  // Récupérer la base de données
+    db = mongoClient.db(config.mongodb.dbName);
     console.log('Connexion MongoDB réussie');
   } catch (error) {
     console.error('Erreur de connexion MongoDB:', error);
-    throw error;  // Relancer l'erreur pour que l'application s'arrête si la connexion échoue
+    throw error;
   }
 }
 
 // Connexion à Redis avec gestion des erreurs
 async function connectRedis() {
   return new Promise((resolve, reject) => {
-    redisClient = redis.createClient(config.redisURI);
+    redisClient = redis.createClient(config.redis.uri);
 
     redisClient.on('error', (error) => {
       console.error('Erreur de connexion Redis:', error);
-      reject(error);  // Rejeter la promesse si la connexion échoue
+      reject(error);
     });
 
     redisClient.on('connect', () => {
       console.log('Connexion Redis réussie');
-      resolve(redisClient);  // Résoudre la promesse une fois la connexion réussie
+      resolve(redisClient);
     });
   });
 }
@@ -71,7 +71,7 @@ async function disconnectMongo() {
 async function disconnectRedis() {
   try {
     if (redisClient) {
-      redisClient.quit();  // Quitter la connexion Redis proprement
+      redisClient.quit();
       console.log('Connexion Redis fermée');
     }
   } catch (error) {
@@ -85,8 +85,9 @@ module.exports = {
   connectRedis,
   disconnectMongo,
   disconnectRedis,
-  getDb: () => db,  // Fonction pour récupérer la base de données MongoDB
+  getDb: () => db,
   mongoClient,
   redisClient
 };
+
 

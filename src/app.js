@@ -15,7 +15,7 @@
 
 const express = require('express');
 const config = require('./config/env');
-const db = require('./config/db'); // Pour la connexion à la base de données
+const db = require('./config/db');
 
 const courseRoutes = require('./routes/courseRoutes');
 const studentRoutes = require('./routes/studentRoutes');
@@ -27,10 +27,8 @@ async function startServer() {
   try {
     // Connexion à MongoDB et Redis
     console.log('Tentative de connexion aux bases de données...');
-    await db.connectMongo();  // Connexion MongoDB
-    console.log('Connexion à MongoDB réussie.');
-    await db.connectRedis();  // Connexion Redis
-    console.log('Connexion à Redis réussie.');
+    await db.connectMongo();
+    await db.connectRedis();
 
     console.log('Bases de données connectées avec succès.');
 
@@ -49,20 +47,19 @@ async function startServer() {
 
   } catch (error) {
     console.error('Échec du démarrage du serveur:', error);
-    await db.disconnectMongo(); // Fermer la connexion MongoDB proprement en cas d'erreur
-    await db.disconnectRedis(); // Fermer la connexion Redis proprement en cas d'erreur
-    process.exit(1);  // Quitter le processus avec un code d'erreur en cas d'échec
+    await db.disconnectMongo();
+    await db.disconnectRedis();
+    process.exit(1);
   }
 }
 
 // Gestion propre de l'arrêt de l'application
 process.on('SIGTERM', async () => {
   console.log('Signal SIGTERM reçu, arrêt du serveur en cours...');
-  await db.disconnectMongo(); // Fermer la connexion MongoDB proprement
-  await db.disconnectRedis(); // Fermer la connexion Redis proprement
-  process.exit(0);  // Quitter le processus avec un code de succès
+  await db.disconnectMongo();
+  await db.disconnectRedis();
+  process.exit(0);
 });
 
 // Démarrer le serveur
 startServer();
-

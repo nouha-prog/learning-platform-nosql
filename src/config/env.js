@@ -31,6 +31,7 @@ function validateEnv() {
       throw new Error(`La variable d'environnement ${envVar} est manquante. Veuillez la définir dans le fichier .env.`);
     }
   });
+  console.log('Toutes les variables d\'environnement requises sont définies.');
 }
 
 // Appel de la fonction de validation des variables d'environnement
@@ -39,11 +40,10 @@ validateEnv();
 module.exports = {
   mongodb: {
     uri: process.env.MONGODB_URI || 'mongodb://localhost:27017',  // URI MongoDB (valeur par défaut si non définie)
-    dbName: process.env.MONGODB_DB_NAME || 'learningPlatform'  // Nom de la base de données (valeur par défaut si non définie)
+    dbName: process.env.MONGODB_DB_NAME || 'learningplatform'  // Nom de la base de données (valeur par défaut si non définie)
   },
   redis: {
     uri: process.env.REDIS_URI || 'redis://localhost:6379'  // URI Redis (valeur par défaut si non définie)
   },
   port: process.env.PORT || 3000  // Port du serveur, par défaut 3000
 };
-
