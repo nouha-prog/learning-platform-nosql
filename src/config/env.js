@@ -39,11 +39,11 @@ validateEnv();
 
 module.exports = {
   mongodb: {
-    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017',  // URI MongoDB (valeur par défaut si non définie)
-    dbName: process.env.MONGODB_DB_NAME || 'learningplatform'  // Nom de la base de données (valeur par défaut si non définie)
+    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017',  // URI MongoDB 
+    dbName: process.env.MONGODB_DB_NAME || 'learningplatform'  // Nom de la base de données 
   },
   redis: {
-    uri: process.env.REDIS_URI || 'redis://localhost:6379'  // URI Redis (valeur par défaut si non définie)
+    uri: process.env.REDIS_URI || 'redis://localhost:6379'  // URI Redis 
   },
-  port: process.env.PORT || 3000  // Port du serveur, par défaut 3000
+  port: process.env.PORT || 3001  // Port du serveur, par défaut 3000
 };

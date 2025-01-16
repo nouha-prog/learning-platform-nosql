@@ -40,10 +40,13 @@ async function startServer() {
     app.use('/students', studentRoutes);
 
     // Démarrage du serveur
-    const port = config.port || 3000;
-    app.listen(port, () => {
-      console.log(`Le serveur fonctionne sur le port ${port}`);
-    });
+ 
+
+    const port = config.port || 3001;
+app.listen(port, () => {
+  console.log(`Le serveur fonctionne sur le port ${port}`);
+});
+
 
   } catch (error) {
     console.error('Échec du démarrage du serveur:', error);
