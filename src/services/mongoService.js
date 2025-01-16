@@ -21,6 +21,14 @@ async function insertOne(collection, data) {
   return result;
 }
 
+// Récupérer tous les documents d'une collection
+async function findAll(collection) {
+  const db = await getDbConnection();
+  const result = await db.collection(collection).find().toArray();  // Utilisation de find() et toArray() pour récupérer tous les documents
+  return result;
+}
+
 module.exports = {
   insertOne,
+  findAll,  // N'oublie pas d'exporter la fonction findAll
 };
