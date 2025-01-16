@@ -20,8 +20,10 @@ dotenv.config();
 const requiredEnvVars = [
   'MONGODB_URI',
   'MONGODB_DB_NAME',
-  'REDIS_URI'
+  'REDIS_URI',
+  'PORT'
 ];
+
 // Validation des variables d'environnement
 function validateEnv() {
   requiredEnvVars.forEach((envVar) => {
@@ -36,11 +38,12 @@ validateEnv();
 
 module.exports = {
   mongodb: {
-    uri: process.env.MONGODB_URI,
-    dbName: process.env.MONGODB_DB_NAME
+    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017',  // URI MongoDB (valeur par défaut si non définie)
+    dbName: process.env.MONGODB_DB_NAME || 'learningPlatform'  // Nom de la base de données (valeur par défaut si non définie)
   },
   redis: {
-    uri: process.env.REDIS_URI
+    uri: process.env.REDIS_URI || 'redis://localhost:6379'  // URI Redis (valeur par défaut si non définie)
   },
-  port: process.env.PORT || 3000
+  port: process.env.PORT || 3000  // Port du serveur, par défaut 3000
 };
+
