@@ -12,15 +12,16 @@
 
 const express = require('express');
 const router = express.Router();
-const courseController = require('../controllers/courseController');
 
-// Vérification de l'importation du contrôleur
-console.log("Course Controller:", courseController);
+// Importer le contrôleur qui contient la logique pour gérer les cours
+const { getCourses, createCourse } = require('../controllers/courseController');
 
-// Routes pour les cours
-router.post('/', courseController.createCourse); // Création d'un cours
-router.get('/:id', courseController.getCourse); // Récupération d'un cours par ID
-router.get('/stats', courseController.getCourseStats); // Statistiques des cours
+// Route GET pour récupérer tous les cours
+router.get('/courses', getCourses);
+
+// Route POST pour créer un nouveau cours
+router.post('/courses', createCourse);
 
 module.exports = router;
+
 
