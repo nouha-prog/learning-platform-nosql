@@ -12,16 +12,59 @@
 
 const express = require('express');
 const router = express.Router();
+const { ObjectId } = require('mongodb');
+const mongoService = require('../services/mongoService');
+const redisService = require('../services/redisService');
 
-// Importer le contrôleur qui contient la logique pour gérer les cours
-const { getCourses, createCourse } = require('../controllers/courseController');
+// Fonction pour créer un cours
+async function createCourse(req, res) {
+  try {
+    const { name, description, teacherId } = req.body;
+    if (!name || !description || !teacherId) {
+      return res.status(400).json({ message: "Nom, description et identifiant de l'enseignant sont requis." });
+    }
+    const course = {
+      name,
+      description,
+      teacherId: new ObjectId(teacherId),
+      createdAt: new Date(),
+    };
+    console.log("Création du cours avec les données:", course);
+    const result = await mongoService.insertOne('courses', course);
+    if (result.insertedId) {
+      redisService.set(`course:${result.insertedId}`, JSON.stringify(course));
+      return res.status(201).json({
+        message: 'Cours créé avec succès',
+        courseId: result.insertedId,
+      });
+    } else {
+      return res.status(500).json({ message: 'Erreur lors de la création du cours' });
+    }
+  } catch (error) {
+    console.error('Erreur lors de la création du cours:', error);
+    return res.status(500).json({ message: 'Erreur interne du serveur' });
+  }
+}
 
-// Route GET pour récupérer tous les cours
+// Fonction pour récupérer tous les cours
+async function getCourses(req, res) {
+  try {
+    const courses = await mongoService.findAll('courses');
+    if (courses.length === 0) {
+      return res.status(404).json({ message: 'Aucun cours trouvé' });
+    }
+    return res.status(200).json(courses);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des cours:', error);
+    return res.status(500).json({ message: 'Erreur interne du serveur' });
+  }
+}
+
+// Définir les routes
+router.post('/courses', createCourse);
 router.get('/courses', getCourses);
 
-// Route POST pour créer un nouveau cours
-router.post('/courses', createCourse);
-
+// Exporter le routeur
 module.exports = router;
 
 
