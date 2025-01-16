@@ -18,7 +18,7 @@ const config = require('./config/env');
 const db = require('./config/db'); // Pour la connexion à la base de données
 
 const courseRoutes = require('./routes/courseRoutes');
-const studentRoutes = require('./routes/studentRoutes');
+
 
 const app = express();
 
