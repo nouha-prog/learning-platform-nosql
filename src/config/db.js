@@ -19,26 +19,27 @@
 */
 const { MongoClient } = require('mongodb');
 const redis = require('redis');
-const config = require('./env');
-
+const config = require('./env'); 
 // Variables pour les clients MongoDB et Redis
 let mongoClient, redisClient, db;
 
+// Connexion à MongoDB avec gestion des erreurs
 async function connectMongo() {
-  // Connexion à MongoDB avec gestion des erreurs
   try {
     console.log('Tentative de connexion à MongoDB...');
-    mongoClient = await MongoClient.connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+    // Utilisation de l'URI MongoDB et du nom de la base de données définis dans le fichier config
+    mongoClient = new MongoClient(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoClient.connect();
     db = mongoClient.db(config.dbName);  // Récupérer la base de données
     console.log('Connexion MongoDB réussie');
   } catch (error) {
     console.error('Erreur de connexion MongoDB:', error);
-    throw error; // Relancer l'erreur pour que l'application s'arrête si la connexion échoue
+    throw error;  // Relancer l'erreur pour que l'application s'arrête si la connexion échoue
   }
 }
 
+// Connexion à Redis avec gestion des erreurs
 async function connectRedis() {
-  // Connexion à Redis avec gestion des erreurs
   return new Promise((resolve, reject) => {
     redisClient = redis.createClient(config.redisURI);
 
