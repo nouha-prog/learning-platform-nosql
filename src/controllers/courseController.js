@@ -12,7 +12,6 @@
 // où les routes sont responsables des requêtes HTTP, et les contrôleurs gèrent la logique métier, rendant ainsi l'application plus claire et évolutive.
 
 const { ObjectId } = require('mongodb');
-const db = require('../config/db');
 const mongoService = require('../services/mongoService');
 const redisService = require('../services/redisService');
 
@@ -41,7 +40,7 @@ async function createCourse(req, res) {
 
     // Vérifier si l'insertion a réussi
     if (result.insertedId) {
-      // Mettre à jour le cache Redis (si nécessaire)
+      // Mettre à jour le cache Redis avec l'ID du cours
       redisService.set(`course:${result.insertedId}`, JSON.stringify(course));
 
       // Retourner une réponse positive
@@ -58,8 +57,6 @@ async function createCourse(req, res) {
   }
 }
 
-// Export des contrôleurs
 module.exports = {
-  createCourse,  // Exporter la fonction de création du cours
+  createCourse, // Exporter la fonction pour la rendre accessible aux routes
 };
-
