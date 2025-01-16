@@ -14,9 +14,13 @@ const express = require('express');
 const router = express.Router();
 const courseController = require('../controllers/courseController');
 
+// Vérification de l'importation du contrôleur
+console.log("Course Controller:", courseController);
+
 // Routes pour les cours
 router.post('/', courseController.createCourse); // Création d'un cours
 router.get('/:id', courseController.getCourse); // Récupération d'un cours par ID
 router.get('/stats', courseController.getCourseStats); // Statistiques des cours
 
 module.exports = router;
+
