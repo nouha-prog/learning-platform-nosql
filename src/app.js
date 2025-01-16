@@ -22,41 +22,40 @@ const studentRoutes = require('./routes/studentRoutes');
 
 const app = express();
 
-// TODO: Initialiser les connexions aux bases de données
-    // TODO: Configurer les middlewares Express
-    // TODO: Monter les routes
-    // TODO: Démarrer le serveur
-
 // Fonction pour démarrer le serveur
 async function startServer() {
   try {
     // Connexion à la base de données (par exemple MongoDB ou autre)
+    console.log('Tentative de connexion à la base de données...');
     await db.connect();
+    console.log('Connexion à la base de données réussie.');
 
     // Configuration des middlewares (par exemple, express.json pour analyser les requêtes JSON)
     app.use(express.json());
 
     // Montage des routes sur l'application Express
+    console.log('Montée des routes...');
     app.use('/courses', courseRoutes);
     app.use('/students', studentRoutes);
 
     // Démarrage du serveur sur un port défini (par exemple, 3000)
     const port = config.port || 3000;
     app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
+      console.log(`Le serveur fonctionne sur le port ${port}`);
     });
 
   } catch (error) {
-    console.error('Failed to start server:', error);
+    console.error('Échec du démarrage du serveur:', error);
     process.exit(1);  // Quitter le processus avec un code d'erreur en cas d'échec
   }
 }
 
 // Gestion propre de l'arrêt de l'application
 process.on('SIGTERM', async () => {
-  console.log('Received SIGTERM, shutting down gracefully...');
+  console.log('Signal SIGTERM reçu, arrêt du serveur en cours...');
   await db.disconnect(); // Fermer la connexion à la base de données proprement
   process.exit(0);  // Quitter le processus avec un code de succès
 });
 
-startServer(); // Appel de la fonction pour démarrer le serveur
+// Appel de la fonction pour démarrer le serveur
+startServer();
