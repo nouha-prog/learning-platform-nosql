@@ -60,3 +60,21 @@ async function createCourse(req, res) {
 module.exports = {
   createCourse, // Exporter la fonction pour la rendre accessible aux routes
 };
+// Fonction pour récupérer tous les cours
+async function getCourses(req, res) {
+  try {
+    // Récupérer tous les cours depuis la collection 'courses' de MongoDB
+    const courses = await mongoService.findAll('courses');  // Appel à un service qui récupère tous les cours
+
+    // Vérifier si des cours existent
+    if (courses.length === 0) {
+      return res.status(404).json({ message: 'Aucun cours trouvé' });
+    }
+
+    // Retourner les cours avec une réponse 200 (OK)
+    return res.status(200).json(courses);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des cours:', error);
+    return res.status(500).json({ message: 'Erreur interne du serveur' });
+  }
+}
