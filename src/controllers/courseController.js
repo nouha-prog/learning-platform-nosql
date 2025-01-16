@@ -57,9 +57,6 @@ async function createCourse(req, res) {
   }
 }
 
-module.exports = {
-  createCourse, // Exporter la fonction pour la rendre accessible aux routes
-};
 // Fonction pour récupérer tous les cours
 async function getCourses(req, res) {
   try {
@@ -78,3 +75,9 @@ async function getCourses(req, res) {
     return res.status(500).json({ message: 'Erreur interne du serveur' });
   }
 }
+
+// Exporter les fonctions
+module.exports = {
+  createCourse, // Exporter la fonction pour la rendre accessible aux routes
+  getCourses,  // Assurez-vous que la fonction getCourses est bien exportée
+};
