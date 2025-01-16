@@ -34,6 +34,8 @@ async function createCourse(req, res) {
       createdAt: new Date(),
     };
 
+    console.log("Création du cours avec les données:", course);
+
     // Sauvegarder le cours dans la base de données MongoDB
     const result = await mongoService.insertOne('courses', course);
 
@@ -58,5 +60,6 @@ async function createCourse(req, res) {
 
 // Export des contrôleurs
 module.exports = {
-  createCourse, // Exporter la fonction de création du cours
+  createCourse,  // Exporter la fonction de création du cours
 };
+
