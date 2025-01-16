@@ -1,3 +1,20 @@
-# Compléter ici !!!!???
+# Dépendances Node.js
+node_modules/
 
-node_modules
+# Fichiers de configuration locaux (environnement)
+.env
+
+# Fichiers de logs
+*.log
+
+# Répertoires de build
+dist/
+build/
+
+# Fichiers IDE (ex. VSCode, IntelliJ)
+.vscode/
+.idea/
+
+# Fichiers système MacOS ou Windows
+.DS_Store
+Thumbs.db
