@@ -25,20 +25,21 @@ const app = express();
 // Fonction pour démarrer le serveur
 async function startServer() {
   try {
-    // Connexion à la base de données (par exemple MongoDB ou autre)
-    console.log('Tentative de connexion à la base de données...');
-    await db.connect();
-    console.log('Connexion à la base de données réussie.');
+    // Connexion à MongoDB et Redis
+    console.log('Tentative de connexion aux bases de données...');
+    await db.connectMongo();  // Connexion MongoDB
+    await db.connectRedis();  // Connexion Redis
 
-    // Configuration des middlewares (par exemple, express.json pour analyser les requêtes JSON)
+    console.log('Bases de données connectées avec succès.');
+
+    // Configuration des middlewares
     app.use(express.json());
 
-    // Montage des routes sur l'application Express
-    console.log('Montée des routes...');
+    // Montage des routes
     app.use('/courses', courseRoutes);
     app.use('/students', studentRoutes);
 
-    // Démarrage du serveur sur un port défini (par exemple, 3000)
+    // Démarrage du serveur
     const port = config.port || 3000;
     app.listen(port, () => {
       console.log(`Le serveur fonctionne sur le port ${port}`);
@@ -53,9 +54,11 @@ async function startServer() {
 // Gestion propre de l'arrêt de l'application
 process.on('SIGTERM', async () => {
   console.log('Signal SIGTERM reçu, arrêt du serveur en cours...');
-  await db.disconnect(); // Fermer la connexion à la base de données proprement
+  await db.disconnectMongo(); // Fermer la connexion MongoDB proprement
+  await db.disconnectRedis(); // Fermer la connexion Redis proprement
   process.exit(0);  // Quitter le processus avec un code de succès
 });
 
-// Appel de la fonction pour démarrer le serveur
+// Démarrer le serveur
 startServer();
+
